@@ -244,4 +244,71 @@ for(var i=0; i<channels; i++) {
 // Close all windows
 close("*");
 
+// 
+// Module: Reopen AND SAVE images as stack (only capable of processing 3 channels!)
+//
+
+if(postprocessReload == true) {
+
+    function setContrastBrightness(channel) {
+        Stack.setChannel(channel);
+        run("Enhance Contrast", "saturated=0.35");
+        run("Enhance Contrast", "saturated=0.35");
+        run("Enhance Contrast", "saturated=0.35");
+    }
+
+    // Get FileList of exported, processed Files
+    processedFiles = getFileList(outputDir + "export/processed/");
+    frames = processedFiles.length/channels;
+
+    // Initialize file count
+    var reloadedFileCount = 0;
+    var currentChannel = 1;
+
+    // Iterate through all channels
+    for(var j=0; j<channels; j++) {
+
+        // Open images of each channel
+        for(var k=0; k<frames; k++) {
+            open(outputDir + "export/processed/" + processedFiles[reloadedFileCount]);
+            reloadedFileCount++;
+        }
+        
+        // Reload all processed images as stack
+        run("Images to Stack", "name=C0" + currentChannel + " use");
+        print("reloaded: " + getTitle());
+
+        currentChannel++;
+    }
+
+    // Create hyperstack for all processed images
+    run("Merge Channels...", "c6=C01 c5=C02 c4=C03 create");
+
+    // Set brightness & contrast and export as AVI
+
+    // C03
+    Stack.setActiveChannels("100");
+    setContrastBrightness(1);
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C03.avi");
+
+    // C02
+    Stack.setActiveChannels("010");
+    setContrastBrightness(2);
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C02.avi");
+
+    // C01
+    Stack.setActiveChannels("001");
+    setContrastBrightness(3);
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
+
+    // Show stack
+    Stack.setActiveChannels("011");
+    setBatchMode("show");
+    // Open channels tool for fun
+    run("Channels Tool...");
+
+} else {
+    close("*")
+}
+
 showMessage("Slice Nicer | v"+ version, "Woah there... Nice slice! Processing was succesful. ImageJ can be closed.");
