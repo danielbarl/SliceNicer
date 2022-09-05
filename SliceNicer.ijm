@@ -286,20 +286,20 @@ if(postprocessReload == true) {
 
     // Set brightness & contrast and export as AVI
 
-    // C03
+    // C02
     Stack.setActiveChannels("100");
     setContrastBrightness(1);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C03.avi");
-
-    // C02
-    Stack.setActiveChannels("010");
-    setContrastBrightness(2);
     run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C02.avi");
 
     // C01
+    Stack.setActiveChannels("010");
+    setContrastBrightness(2);
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
+
+    // C00
     Stack.setActiveChannels("001");
     setContrastBrightness(3);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C00.avi");
 
     // Show & save stack
     Stack.setActiveChannels("011");
