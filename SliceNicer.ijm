@@ -1,6 +1,6 @@
 // ***** .LSM FILES MUST BE OPENED VIA BIOFORMAT IMPORTER ***** 
 
-setBatchMode(true)
+setBatchMode(true);
 
 close("*");
 
@@ -8,7 +8,7 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.1";
+version = "1.2";
 refImg = 1;
 
 // **************** HELP *******************
@@ -62,6 +62,8 @@ Dialog.addFile("Choose ROI file in .roi format:", roiFile);
 Dialog.addDirectory("Choose output directory: ", outputDir);
 // User selects reference image
 Dialog.addNumber("Select reference image:", refImg);
+// Checked if postprocess reload as stack should be executed at the end
+Dialog.addCheckbox("Load stack after processing", true);
 // Help button
 Dialog.addHelp(html);
 Dialog.show();
@@ -71,7 +73,8 @@ username = Dialog.getString();
 inputFile = Dialog.getString();
 roiFile = Dialog.getString();
 outputDir = Dialog.getString();
-refImg = Dialog.getNumber() - 1;
+refImg = Dialog.getNumber();
+postprocessReload = Dialog.getCheckbox();
 
 // Debug: Log refImg
 print("Ref.Image: " + refImg);
@@ -238,6 +241,7 @@ for(var i=0; i<channels; i++) {
     currentChannel++;
 }
 
+// Close all windows
 close("*");
 
 showMessage("Slice Nicer | v"+ version, "Woah there... Nice slice! Processing was succesful. ImageJ can be closed.");
