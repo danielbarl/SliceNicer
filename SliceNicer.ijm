@@ -8,7 +8,7 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.2.1";
+version = "1.2.3";
 refImg = 1;
 
 // **************** HELP *******************
@@ -115,17 +115,21 @@ print("Height: " + height);
 print("Frames: " + frames);
 
 // Get an array of all open windows (1 image = 1 channel)
-channelArray = getList("image.titles");
+var channelArray = getList("image.titles");
 
 //Debug: Print name of currently processed channel
 //Array.show(channelArray);
 
 // Loop through open channels
-for(var i=0; i<channelArray.length; i++){
+for(var i=channelArray.length - 1; i>=0; i--){
+    // Define real_channel: What is the CORRECT and VALID channel of the chanel stack? 0=AF 1=570 2=667
+    var realChannelNumber = 2 - i
+;
+
     selectWindow(channelArray[i]);
 
     // Debug Info: Current Channel
-    print("Currently processing: " + channelArray[i]);
+    print("Currently processing: " + channelArray[i] + " (realChannel = " + realChannelNumber + ")");
 
     //Split channel into single images
     run("Stack to Images");
@@ -148,10 +152,10 @@ for(var i=0; i<channelArray.length; i++){
     for(var j=0; j<imageArray.length; j++){
         //print("bef: " + imageArray[j] + "(Count: " + imgCount + ")");
         selectWindow(imageArray[j]);
-        rename("C" + i + "_" + imageArray[j]);
+        rename("C" + realChannelNumber + "_" + imageArray[j]);
         
         // Debug: Print name of currently processed channel
-        //print("now: " + getTitle());
+        print("now: " + getTitle());
 
         // Save image as tiff
         if(imgCount >= refImg) {
@@ -174,9 +178,10 @@ frames = unprocessedFiles.length/channels;
 print("nChannels:" + channels);
 print("FileList Length: " + unprocessedFiles.length);
 
-var currentChannel = 1;
+// THIS HARDCODES THE NUMBER OF POSSIBLE PROCESSED STACKS TO 3
+var currentChannel = 2;
 
-// Initialize file count
+// Initialize file count 
 var reloadedFileCount = 0;
 
 // Iterate through all channels
@@ -238,7 +243,7 @@ for(var i=0; i<channels; i++) {
 
     // Close all windows
     close("*");
-    currentChannel++;
+    currentChannel--;
 }
 
 // Close all windows
