@@ -8,7 +8,7 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.2";
+version = "1.2.1";
 refImg = 1;
 
 // **************** HELP *******************
@@ -73,7 +73,7 @@ username = Dialog.getString();
 inputFile = Dialog.getString();
 roiFile = Dialog.getString();
 outputDir = Dialog.getString();
-refImg = Dialog.getNumber();
+refImg = Dialog.getNumber() - 1;
 postprocessReload = Dialog.getCheckbox();
 
 // Debug: Log refImg
@@ -301,14 +301,22 @@ if(postprocessReload == true) {
     setContrastBrightness(3);
     run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
 
-    // Show stack
+    // Show & save stack
     Stack.setActiveChannels("011");
+    saveAs("Tiff", outputDir + "export/processed_stack.tif");
+    // Delete processed folder
+
+    /*for(var j=0; j<processedFiles; j++) {
+        File.delete(outputDir + "export/processed/" + processedFiles[j]);
+    }
+    File.delete(outputDir + "export/processed/"); */
+
     setBatchMode("show");
     // Open channels tool for fun
     run("Channels Tool...");
 
 } else {
-    close("*")
+    close("*");
 }
 
 showMessage("Slice Nicer | v"+ version, "Woah there... Nice slice! Processing was succesful. ImageJ can be closed.");
