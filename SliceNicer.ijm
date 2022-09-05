@@ -87,9 +87,6 @@ run("Bio-Formats Importer",
     "open=["+ inputFile +"]color_mode=Composite rois_import=[ROI manager] split_channels view=Hyperstack stack_order=XYCZT use_virtual_stack");
 
 // Initialize necessary directories
-
-// maybe initialize folder and delete all data from the directory
-
 File.makeDirectory(outputDir + "/export");
 File.makeDirectory(outputDir + "/export/unprocessed/");
 File.makeDirectory(outputDir + "/export/processed/");
@@ -100,7 +97,6 @@ Stack.getDimensions(width, height, channels, slices, frames);
 getPixelSize(unit, pixelWidth, pixelHeight);
 
 // Load custom ROI
-
 if(roiFile != "C:/Users/" + username + "/Desktop/" || roiFile != "") {
     run("ROI Manager...");
     roiManager("Open", roiFile);
@@ -120,16 +116,16 @@ var channelArray = getList("image.titles");
 //Debug: Print name of currently processed channel
 //Array.show(channelArray);
 
-// Loop through open channels
+// Channels are loaded in following order [515 Channel, 570 Channel, 667 Channel]
+// Loop backwards through open channels
 for(var i=channelArray.length - 1; i>=0; i--){
     // Define real_channel: What is the CORRECT and VALID channel of the chanel stack? 0=AF 1=570 2=667
-    var realChannelNumber = 2 - i
-;
+    var realChannel= 2 - i;
 
     selectWindow(channelArray[i]);
 
     // Debug Info: Current Channel
-    print("Currently processing: " + channelArray[i] + " (realChannel = " + realChannelNumber + ")");
+    print("Currently processing: " + channelArray[i] + " (realChannel = " + realChannel + ")");
 
     //Split channel into single images
     run("Stack to Images");
@@ -167,7 +163,6 @@ for(var i=channelArray.length - 1; i>=0; i--){
             close();
             imgCount = imgCount + 1;}
     }
-    
 }
 
 // Get FileList of exported, unprocessed Files
@@ -317,7 +312,7 @@ if(postprocessReload == true) {
     File.delete(outputDir + "export/processed/"); */
 
     setBatchMode("show");
-    // Open channels tool for fun
+    // Open channels tool (for further editing)
     run("Channels Tool...");
 
 } else {
