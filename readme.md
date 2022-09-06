@@ -14,7 +14,7 @@ SliceNicer is an ImageJ macro for normalization of time lapse images against a t
 
 ## Screenshot
 
-<img alt="Screenshot" src=".assets/screenshot.png" style="max-width: 500px;">
+<img alt="Screenshot" src=".assets/screenshot.png" style="max-width: 500px !important;">
 
 ## Usage
 
@@ -45,7 +45,7 @@ Close all windows except the main ImageJ window.
 
 ### Download
 
-<a href="https://github.com/danielbarleben/SliceNicer/slicenicer.ijm">SliceNicer.ijm - September 9, 2022 - 12 KB</a>
+<a href="https://github.com/danielbarleben/SliceNicer/slicenicer.ijm">SliceNicer.ijm - September 6, 2022 - 12 KB</a>
 
 ### Installation
 
