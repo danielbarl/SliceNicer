@@ -10,6 +10,10 @@ SliceNicer is an ImageJ macro for normalization of time lapse images against a t
     - [Download](#Download)
     - [Installation](#Installation)
 
+## Screenshot
+
+<img alt="Screenshot" src=".assets/screenshot.png">
+
 ## Usage
 
 1. Import .lsm-file (containing the timelapse) into ImageJ
