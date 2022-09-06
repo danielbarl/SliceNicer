@@ -8,7 +8,7 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.2.3";
+version = "1.2.4";
 refImg = 1;
 
 // **************** HELP *******************
@@ -102,13 +102,13 @@ if(roiFile != "C:/Users/" + username + "/Desktop/" || roiFile != "") {
     roiManager("Open", roiFile);
 }
 
-// Get number of loaded channels
 channels = nImages();
 
 // Debug: Log dimensions
 print("Width: " + width);
 print("Height: " + height);
 print("Frames: " + frames);
+print("Channels: " + channels);
 
 // Get an array of all open windows (1 image = 1 channel)
 var channelArray = getList("image.titles");
@@ -120,7 +120,7 @@ var channelArray = getList("image.titles");
 // Loop backwards through open channels
 for(var i=channelArray.length - 1; i>=0; i--){
     // Define real_channel: What is the CORRECT and VALID channel of the chanel stack? 0=AF 1=570 2=667
-    var realChannel= 2 - i;
+    var realChannel = 2 - i;
 
     selectWindow(channelArray[i]);
 
@@ -148,7 +148,7 @@ for(var i=channelArray.length - 1; i>=0; i--){
     for(var j=0; j<imageArray.length; j++){
         //print("bef: " + imageArray[j] + "(Count: " + imgCount + ")");
         selectWindow(imageArray[j]);
-        rename("C" + realChannelNumber + "_" + imageArray[j]);
+        rename("C" + realChannel + "_" + imageArray[j]);
         
         // Debug: Print name of currently processed channel
         print("now: " + getTitle());
@@ -174,7 +174,7 @@ print("nChannels:" + channels);
 print("FileList Length: " + unprocessedFiles.length);
 
 // THIS HARDCODES THE NUMBER OF POSSIBLE PROCESSED STACKS TO 3
-var currentChannel = 2;
+currentChannel = channels - 1;
 
 // Initialize file count 
 var reloadedFileCount = 0;
@@ -263,11 +263,11 @@ if(postprocessReload == true) {
 
     // Initialize file count
     var reloadedFileCount = 0;
-    var currentChannel = 1;
+    var currentChannel = 2;
 
     // Iterate through all channels
-    for(var j=0; j<channels; j++) {
 
+    for(var j=currentChannel; j>=0; j--){ //for(var j=0; j<channels; j++) {
         // Open images of each channel
         for(var k=0; k<frames; k++) {
             open(outputDir + "export/processed/" + processedFiles[reloadedFileCount]);
@@ -275,31 +275,31 @@ if(postprocessReload == true) {
         }
         
         // Reload all processed images as stack
-        run("Images to Stack", "name=C0" + currentChannel + " use");
-        print("reloaded: " + getTitle());
+        run("Images to Stack", "name=C" + currentChannel + " use");
+        print("reload: " + getTitle());
 
-        currentChannel++;
+        currentChannel--;
     }
 
     // Create hyperstack for all processed images
-    run("Merge Channels...", "c6=C01 c5=C02 c4=C03 create");
+    run("Merge Channels...", "c6=C0 c5=C1 c2=C2 create");
 
     // Set brightness & contrast and export as AVI
 
     // C02
     Stack.setActiveChannels("100");
     setContrastBrightness(1);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C02.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C2.avi");
 
     // C01
     Stack.setActiveChannels("010");
     setContrastBrightness(2);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C1.avi");
 
     // C00
     Stack.setActiveChannels("001");
     setContrastBrightness(3);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C00.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C0.avi");
 
     // Show & save stack
     Stack.setActiveChannels("011");
