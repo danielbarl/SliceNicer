@@ -14,7 +14,7 @@ SliceNicer is an ImageJ macro for normalization of time lapse images against a t
 
 ## Screenshot
 
-<img alt="Screenshot" src=".assets/screenshot.png" style="max-width: 500px !important;">
+<img alt="Screenshot" src=".assets/screenshot.png">
 
 ## Usage
 
