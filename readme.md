@@ -45,7 +45,7 @@ Close all windows except the main ImageJ window.
 
 ### Download
 
-<a href="https://github.com/danielbarleben/SliceNicer/slicenicer.ijm">SliceNicer.ijm - September 6, 2022 - 12 KB</a>
+<a href="https://github.com/danielbarleben/SliceNicer/releases/download/v1.2.4/SliceNicer_v1.2.4.ijm">SliceNicer_v1.2.4.ijm - September 6, 2022 - 10 KB</a>
 
 ### Installation
 
