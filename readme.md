@@ -5,12 +5,13 @@ SliceNicer is an ImageJ macro for normalization of time lapse images against a t
 ## Content
 
 - Content
-- [Screenshot](#Screenshot)
-- [Usage](#Usage)
-- [Getting started](#Getting-started)
-    - [Notes](#Notes)
-    - [Download](#Download)
-    - [Installation](#Installation)
+- [Screenshot](#screenshot)
+- [Usage](#usage)
+- [Getting started](#getting-started)
+    - [Notes](#notes)
+    - [Download](#download)
+    - [Installation via fiji-installer.bat (windows only)](#installation-via-fiji-installerbat-windows-only)
+    - [Manual installation](#manual-installation)
 
 ## Screenshot
 
