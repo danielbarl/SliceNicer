@@ -8,7 +8,7 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.2.4";
+version = "1.2.5";
 refImg = 1;
 
 // **************** HELP *******************
@@ -257,7 +257,7 @@ if(postprocessReload == true) {
     // C02
     Stack.setActiveChannels("100");
     setContrastBrightness(1);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C2.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C0.avi");
 
     // C01
     Stack.setActiveChannels("010");
@@ -267,7 +267,7 @@ if(postprocessReload == true) {
     // C00
     Stack.setActiveChannels("001");
     setContrastBrightness(3);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C0.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C2.avi");
 
     // Show & save stack
     Stack.setActiveChannels("011");
