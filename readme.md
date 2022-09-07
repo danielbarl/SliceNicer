@@ -25,9 +25,9 @@ Close all windows except the main ImageJ window.
 4. You should now have two files
     - the `.lsm` file
     - the `.roi` file
-5. Open the macro via <kbd>Plugins > SliceNicer</kbd>
+5. Open the macro via <kbd>Plugins > SliceNicer_v#.#.#</kbd>
 6. Adjust settings:
-    - Username: the username of the user who is logged on to the computer.
+    - Username: the username of the user who is logged on to the computer
     - Input file: the present `.lsm` file
     - ROI file: the present `.roi` file
     - Output directory: the directory where the export folder containing all output files will be created (if the default directory is chosen, the folder content will be overwritten with each application)
@@ -42,18 +42,28 @@ Close all windows except the main ImageJ window.
 ### Notes
 
 - The input file must be in `.tiff` format or any other TIFF dependent format (e.g. `.lsm`)
+- The fiji-installer only works with Fiji, not with plain ImageJ
 
 ### Download
 
 <a href="https://github.com/danielbarleben/SliceNicer/releases/download/v1.2.5/SliceNicer_v1.2.5.zip">SliceNicer_v1.2.5.zip - September 7, 2022 - 3.45 KB</a>
 
-### Installation
+### Installation via fiji-installer.bat (windows only)
 
-1. Download the latest macro version using the download button.
-2. Open ImageJ or Fiji
-3. Go to <kbd>Plugins > Install...</kbd> and select the downloaded SliceNicer.ijm file.
-4. Close and reopen ImageJ
+1. Download the latest macro version using the download link (see above)
+2. Extract the `.zip` file
+3. Run the `fiji-installer.bat` to copy the file to the correct location and delete deprecated versions
+4. Restart ImageJ
 5. The macro can now be found under Plugins (at the bottom of the dropdown menu)
+
+### Manual installation
+1. Download the latest macro version using the download link (see above)
+2. Extract the `.zip` file
+3. Open ImageJ or Fiji
+4. Go to <kbd>Plugins > Install...</kbd> and select the extracted `SliceNicer_#.#.#.ijm` file.
+5. Restart ImageJ
+6. The macro can now be found under Plugins (at the bottom of the dropdown menu)
+
 
 
 
