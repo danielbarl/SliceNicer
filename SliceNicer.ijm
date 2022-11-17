@@ -8,46 +8,14 @@ username = "danielba";
 inputFile = "C:/Users/" + username + "/Desktop/";
 outputDir = "C:/Users/" + username + "/Desktop/";
 roiFile = "C:/Users/" + username + "/Desktop/";
-version = "1.2.3";
+version = "1.2.5";
 refImg = 1;
 
 // **************** HELP *******************
 
 html = "<html>"
     +"<h2>Slice Nicer | v" + version +"</h2>"
-    +"Macro for automated analysis of penetration (slice) assay<br>"
-    +"and therefor normalize images acquired over a period of time<br>"
-    +"<h3>IMPORTANT</h3>"
-    +"<ul><li><strong>Always open ImageJ fresh before starting the macro</strong></li>"
-    +"<li><strong>Make sure to not have ANY images opened before starting the macro</strong></li>"
-    +"<li><strong>Make sure the output directory is empty before starting the macro</strong></li></ul>"
-    +"<h3>Username</h3>"
-    +"Enter user name for the user who is currently logged in to<br>"
-    +"the computer. Necessary so that output files can be saved<br>"
-    +"in an existing directory.<br>"
-    +"<h3>Choose input file in .lsm format</h3>"
-    +"Choose .lsm file to process with this tool. Other multi- <br>"
-    +"dimensional stacks haven't been tested so far.<br>"
-    +"<h3>Choose ROI file in .roi format</h3>"
-    +"Choose ROI file to be used for plotting the profile. .roi files<br>"
-    +"can be generated as follows:<br>"
-    +"<ol><li>Open an image in ImageJ</li>"
-    +"<li>Create an ROI (e.g. via the line tool)</li>"
-    +"<li>Open ROI Manager (Analyse > Tools > RoiManager...</li>"
-    +"<li>Press 'add' to add the ROI to the ROI Manager</li>"
-    +"<li>Press 'more' > 'save' to save the ROI</li></ol>"
-    +"<h3>Choose output directory</h3>"
-    +"Select the directory in which the processed data will be<br>"
-    +"stored. During processing a new 'export' folder will be created.<br>"
-    +"Single, unprocessed images will be saved in an 'unprocessed' subfolder<br>"
-    +"Single, normalized images will be saved in a 'processed' subfolder<br>"
-    +"By default, the 'export' folder is created on the desktop.<br><br>"
-    +"<h3>Select reference image frame</h3>"
-    +".<br>"
-    +"For normalization an initial image of the slice is needed<br>"
-    +"as a point of reference. Enter the corresponding number of <br>"
-    +"the frame that should be used as the reference."
-    +"<br><br><font size=-2>Macro by danielba</font>";
+    +"see Documentation on <a href='https://github.com/danielbarleben/SliceNicer'>GitHub</a></html>";
 
 // ************ GET USER INPUT *************
 
@@ -102,13 +70,13 @@ if(roiFile != "C:/Users/" + username + "/Desktop/" || roiFile != "") {
     roiManager("Open", roiFile);
 }
 
-// Get number of loaded channels
 channels = nImages();
 
 // Debug: Log dimensions
 print("Width: " + width);
 print("Height: " + height);
 print("Frames: " + frames);
+print("Channels: " + channels);
 
 // Get an array of all open windows (1 image = 1 channel)
 var channelArray = getList("image.titles");
@@ -120,7 +88,7 @@ var channelArray = getList("image.titles");
 // Loop backwards through open channels
 for(var i=channelArray.length - 1; i>=0; i--){
     // Define real_channel: What is the CORRECT and VALID channel of the chanel stack? 0=AF 1=570 2=667
-    var realChannel= 2 - i;
+    var realChannel = 2 - i;
 
     selectWindow(channelArray[i]);
 
@@ -148,7 +116,7 @@ for(var i=channelArray.length - 1; i>=0; i--){
     for(var j=0; j<imageArray.length; j++){
         //print("bef: " + imageArray[j] + "(Count: " + imgCount + ")");
         selectWindow(imageArray[j]);
-        rename("C" + realChannelNumber + "_" + imageArray[j]);
+        rename("C" + realChannel + "_" + imageArray[j]);
         
         // Debug: Print name of currently processed channel
         print("now: " + getTitle());
@@ -174,7 +142,7 @@ print("nChannels:" + channels);
 print("FileList Length: " + unprocessedFiles.length);
 
 // THIS HARDCODES THE NUMBER OF POSSIBLE PROCESSED STACKS TO 3
-var currentChannel = 2;
+currentChannel = channels - 1;
 
 // Initialize file count 
 var reloadedFileCount = 0;
@@ -263,11 +231,11 @@ if(postprocessReload == true) {
 
     // Initialize file count
     var reloadedFileCount = 0;
-    var currentChannel = 1;
+    var currentChannel = 2;
 
     // Iterate through all channels
-    for(var j=0; j<channels; j++) {
 
+    for(var j=currentChannel; j>=0; j--){ //for(var j=0; j<channels; j++) {
         // Open images of each channel
         for(var k=0; k<frames; k++) {
             open(outputDir + "export/processed/" + processedFiles[reloadedFileCount]);
@@ -275,31 +243,31 @@ if(postprocessReload == true) {
         }
         
         // Reload all processed images as stack
-        run("Images to Stack", "name=C0" + currentChannel + " use");
-        print("reloaded: " + getTitle());
+        run("Images to Stack", "name=C" + currentChannel + " use");
+        print("reload: " + getTitle());
 
-        currentChannel++;
+        currentChannel--;
     }
 
     // Create hyperstack for all processed images
-    run("Merge Channels...", "c6=C01 c5=C02 c4=C03 create");
+    run("Merge Channels...", "c6=C0 c5=C1 c2=C2 create");
 
     // Set brightness & contrast and export as AVI
 
     // C02
     Stack.setActiveChannels("100");
     setContrastBrightness(1);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C02.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C0.avi");
 
     // C01
     Stack.setActiveChannels("010");
     setContrastBrightness(2);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C01.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C1.avi");
 
     // C00
     Stack.setActiveChannels("001");
     setContrastBrightness(3);
-    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C00.avi");
+    run("AVI... ", "compression=JPEG frame=2 save=" + outputDir + "export/processed_C2.avi");
 
     // Show & save stack
     Stack.setActiveChannels("011");
