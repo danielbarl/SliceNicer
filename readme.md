@@ -1,6 +1,6 @@
 # SliceNicer
 
-SliceNicer is an ImageJ macro for normalization of time lapse images against a t0 reference image
+SliceNicer is an ImageJ macro for normalization of time lapse images against a reference image
 
 ## Content
 
